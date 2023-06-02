@@ -1,4 +1,3 @@
-import Image from "next/image";
 import ArtPiecePreview from "../ArtPiecePreview";
 
 export default function ArtPieces({ pieces }) {
@@ -8,15 +7,15 @@ export default function ArtPieces({ pieces }) {
         {!pieces ? (
           <h1>...loading</h1>
         ) : (
-          pieces.map((piece) => {
-            console.log(piece.artist);
+          // deconstruct piece object in callback function
+          pieces.map(({ slug, artist, name, imageSource }) => {
             return (
               <ArtPiecePreview
-                key={piece.slug}
-                artist={piece.artist}
-                title={piece.name}
-                slug={piece.slug}
-                image={piece.imageSource}
+                key={slug}
+                artist={artist}
+                title={name}
+                slug={slug}
+                image={imageSource}
               />
             );
           })
