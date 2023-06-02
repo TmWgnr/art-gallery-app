@@ -1,4 +1,5 @@
 import ArtPiecePreview from "../ArtPiecePreview";
+import Spotlight from "../Spotlight";
 
 export default function ArtPieces({ pieces }) {
   return (
@@ -10,13 +11,16 @@ export default function ArtPieces({ pieces }) {
           // deconstruct piece object in callback function
           pieces.map(({ slug, artist, name, imageSource }) => {
             return (
-              <ArtPiecePreview
-                key={slug}
-                artist={artist}
-                title={name}
-                slug={slug}
-                image={imageSource}
-              />
+              <>
+                <ArtPiecePreview
+                  key={slug}
+                  artist={artist}
+                  title={name}
+                  slug={slug}
+                  image={imageSource}
+                />
+                <Spotlight />
+              </>
             );
           })
         )}
