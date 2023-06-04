@@ -1,8 +1,9 @@
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+import ArtPiecePreview from "../ArtPiecePreview";
 
-getRandomIntInclusive(0, 100);
-console.log(getRandomIntInclusive);
+export default function Spotlight({ image, artist }) {
+  return (
+    <ul>
+      <ArtPiecePreview image={image} artist={artist} />
+    </ul>
+  );
+}
