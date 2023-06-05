@@ -22,6 +22,7 @@ const fetcher = async (url) => {
 
 export default function App({ Component, pageProps }) {
   const { data } = useSWR(URL, fetcher);
+  console.log(data);
   return (
     <>
       {!data ? (
