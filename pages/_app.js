@@ -2,27 +2,31 @@ import Layout from "@/components/Layout";
 import GlobalStyle from "../styles";
 import { SWRConfig } from "swr";
 import useSWR from "swr";
+import React, { useState } from "react";
 
 const URL = "https://example-apis.vercel.app/api/art";
-const fetcher = async (url) => {
-  const res = await fetch(url);
-
-  // If the status code is not in the range 200-299,
-  // we still try to parse and throw it.
-  if (!res.ok) {
-    const error = new Error("An error occurred while fetching the data.");
-    // Attach extra info to the error object.
-    error.info = await res.json();
-    error.status = res.status;
-    throw error;
-  }
-
-  return res.json();
-};
+const fetcher = (URL) => fetch(URL).then((response) => response.json());
 
 export default function App({ Component, pageProps }) {
   const { data } = useSWR(URL, fetcher);
-  console.log(data);
+
+  const [artPiecesInfo, setArtPiecesInfo] = useState(data);
+  console.log(artPiecesInfo);
+
+  // Last doings: create favorite button, tried to implement the onToggleFavorite function. We gave all props from _app.js to the lower level components (up to "FavoriteButton") Right now we again don't receive data from our state "artPiecesInfo" when reloading the page. After the first render (npm run dev) we do receive the data.
+
+  function onToggleFavorite(slug) {
+    if (artPiecesInfo) {
+      setArtPiecesInfo(
+        artPiecesInfo.map((artPieceInfo) =>
+          artPieceInfo.slug === slug
+            ? { ...artPieceInfo, isFavorite: !artPieceInfo.isFavorite }
+            : artPieceInfo
+        )
+      );
+    }
+  }
+
   return (
     <>
       {!data ? (
@@ -31,7 +35,12 @@ export default function App({ Component, pageProps }) {
         <SWRConfig value={{ fetcher }}>
           <GlobalStyle />
           <Layout />
-          <Component {...pageProps} pieces={data} />
+          <Component
+            {...pageProps}
+            pieces={data}
+            onToggleFavorite={onToggleFavorite}
+            artPiecesInfo={artPiecesInfo}
+          />
         </SWRConfig>
       )}
     </>
